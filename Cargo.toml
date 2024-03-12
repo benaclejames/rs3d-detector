@@ -1,0 +1,16 @@
+[package]
+name = "rs3d-detector"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ndarray = { version = "0.15.6" }
+opencv = "0.88.8"
+serde = "1.0.197"
+serde_derive = "1.0.197"
+rmp-serde = "1.1.2"
+serde_json = "1.0.114"
+serde-ndim = { version = "1.1.0", features = ["ndarray"] }
+num-traits = "0.2.18"
