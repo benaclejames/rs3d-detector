@@ -1,14 +1,19 @@
 use std::iter::zip;
+use std::time::SystemTime;
+use ndarray::Array1;
 use num_traits::ToPrimitive;
 use crate::CameraModel::CameraModel;
 use crate::primitive::Ellipse;
+use crate::projections::unproject_ellipse;
 
 pub struct Observation {
     pub ellipse: Ellipse,
     pub confidence_2d: f64,
     pub confidence: f64,
     pub timestamp: f64,
-    pub invalid: bool
+    pub invalid: bool,
+    pub circle_3d_pair: Option<Array1<f64>>,
+    pub gaze_3d_pair: Option<Array1<f64>>,
 }
 
 pub struct BasicStorage {
@@ -30,6 +35,20 @@ pub struct BinBufferedObservationStorage {
     pub w: usize,
     pub h: usize,
     pub storage: Vec<Observation>
+}
+
+impl Observation {
+    pub fn new(ellipse: Ellipse, confidence: f64, timestamp: f64, focal_length: f64, ) -> Observation {
+        let mut obs = Observation {
+            ellipse,
+            confidence_2d: confidence,
+            confidence: 0.0,
+            timestamp,
+            circle_3d_pair: unproject_ellipse(&ellipse, focal_length, 1.0),
+        };
+
+
+    }
 }
 
 pub trait ObservationStorage {

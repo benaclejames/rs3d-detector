@@ -1,7 +1,11 @@
+use std::collections::HashMap;
+use std::f64::consts::PI;
 use std::option::Option;
+use ndarray::{array, Array1, ArrayD};
 use crate::CameraModel::CameraModel;
 use crate::kalman::KalmanFilter;
-use crate::observations::{BinBufferedObservationStorage, BufferedObservationStorage};
+use crate::observations::{BinBufferedObservationStorage, BufferedObservationStorage, Observation};
+use crate::primitive::Ellipse;
 use crate::two_sphere_model::TwoSphereModel;
 
 #[derive(PartialEq)]
@@ -39,6 +43,18 @@ pub struct Detector3D {
 
     long_term_schedule: Option<ModelUpdateSchedule>,
     ult_long_term_schedule: Option<ModelUpdateSchedule>
+}
+
+pub struct PupilEllipse {
+    pub center: Array1<f64>,
+    pub axes: Array1<f64>,
+    pub angle: f64
+}
+
+pub struct PupilDatum {
+    pub confidence: f64,
+    pub timestamp: f64,
+    pub ellipse: PupilEllipse
 }
 
 impl ModelUpdateSchedule {
@@ -214,5 +230,28 @@ impl Detector3D {
                 )
             )
         )
+    }
+
+    pub fn update_and_detect(&mut self, pupil_datum: PupilDatum, frame: ArrayD<f64>, apply_refraction_correction: bool, debug: bool) {
+        let observation = self.extract_observation(pupil_datum);
+    }
+
+    pub fn extract_observation(&mut self, pupil_datum: PupilDatum) -> Observation {
+        let cam_resolution = &self.camera.resolution.clone();
+        let width = cam_resolution[0];
+        let height = cam_resolution[1];
+        let center = array!(
+            pupil_datum.ellipse.center[0] - width / 2.0,
+            pupil_datum.ellipse.center[1] - height / 2.0
+        );
+        let minor_radius = pupil_datum.ellipse.axes[0] / 2.0;
+        let major_radius = pupil_datum.ellipse.axes[1] / 2.0;
+        let angle = (pupil_datum.ellipse.angle - 90.0) * PI / 180.0;
+        let ellipse = Ellipse::new(center, minor_radius, major_radius, angle);
+
+        Observation {
+            ellipse,
+
+        }
     }
 }
