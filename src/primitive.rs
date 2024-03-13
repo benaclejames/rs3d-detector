@@ -1,6 +1,5 @@
-use ndarray::{Array1, Array3, ArrayD};
+use ndarray::{Array1, ArrayD};
 use std::f64::consts::{PI};
-use serde_ndim::ser::NDim;
 
 pub struct Ellipse {
     pub center: Array1<f64>,
@@ -76,6 +75,6 @@ impl Circle {
     }
 
     pub fn spherical_representation(&self) -> (f64, f64, f64) {
-
+        todo!()
     }
 }

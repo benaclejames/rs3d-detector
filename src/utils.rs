@@ -1,5 +1,5 @@
 mod utils {
-    use ndarray::{Array1, ArrayD};
+    use ndarray::{Array1};
 
     fn l2_norm(v: &Array1<f64>) -> f64 {
         v.dot(v).sqrt()
@@ -13,7 +13,7 @@ mod utils {
     }
 
     pub fn sph2cart(phi: f64, theta: f64) -> Array1<f64> {
-        let result = Array1::zeros(3);
+        let mut result = Array1::zeros(3);
 
         result[[0]] = theta.sin() * phi.cos();
         result[[1]] = theta.cos();
