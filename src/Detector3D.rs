@@ -64,7 +64,7 @@ impl ModelUpdateSchedule {
         self.paused = false
     }
 
-    pub fn is_update_due(&mut self, current_time: f64) -> bool {
+    pub fn update_due(&mut self, current_time: f64) -> bool {
         if self.paused {
             return false
         }

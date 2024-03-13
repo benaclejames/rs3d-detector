@@ -1,6 +1,6 @@
 use ndarray::{array, Array1, Array2, Axis};
 use crate::CameraModel::CameraModel;
-use crate::observations::{BasicStorage, ObservationStorage};
+use crate::observations::{ObservationStorage};
 use crate::refractionizer::Refractionizer;
 
 pub struct TwoSphereModel {
