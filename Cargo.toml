@@ -3,10 +3,16 @@ name = "rs3d-detector"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name="meme"
+path="src/main.rs"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 ndarray = { version = "0.15.6" }
+nalgebra = "0.32.4"
+nshare = { version = "0.9.0", features = ["ndarray", "nalgebra"] }
 opencv = "0.88.8"
 serde = "1.0.197"
 serde_derive = "1.0.197"

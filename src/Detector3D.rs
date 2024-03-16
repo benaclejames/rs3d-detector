@@ -234,6 +234,13 @@ impl Detector3D {
 
     pub fn update_and_detect(&mut self, pupil_datum: PupilDatum, frame: ArrayD<f64>, apply_refraction_correction: bool, debug: bool) {
         let observation = self.extract_observation(pupil_datum);
+        self.update_models(observation);
+    }
+
+    pub fn update_models(&mut self, observation: Observation) {
+        let long_term_schedule = &mut self.long_term_model.as_mut().unwrap();
+        long_term_schedule.add_observation(observation);
+        let ult_long_term_schedule = &mut self.ult_long_term_schedule.as_mut().unwrap();
     }
 
     pub fn extract_observation(&mut self, pupil_datum: PupilDatum) -> Observation {
@@ -249,9 +256,11 @@ impl Detector3D {
         let angle = (pupil_datum.ellipse.angle - 90.0) * PI / 180.0;
         let ellipse = Ellipse::new(center, minor_radius, major_radius, angle);
 
-        Observation {
+        Observation::new(
             ellipse,
-
-        }
+            pupil_datum.confidence,
+            pupil_datum.timestamp,
+            self.camera.focal_length
+        )
     }
 }

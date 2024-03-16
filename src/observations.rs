@@ -1,12 +1,10 @@
-use std::iter::zip;
-use std::time::SystemTime;
 use ndarray::{array, Array1, Array2, Array3, Axis, concatenate, s};
 use num_traits::ToPrimitive;
-use opencv::imgproc::circle;
 use crate::CameraModel::CameraModel;
 use crate::primitive::{Ellipse, Line};
 use crate::projections::{Circle3D, project_line_onto_image_plane, unproject_ellipse};
 
+#[derive(Clone)]
 pub struct Observation {
     pub ellipse: Ellipse,
     pub confidence_2d: f64,
@@ -73,7 +71,7 @@ impl Observation {
             gaze_3d_pair,
             gaze_2d,
             gaze_2d_line,
-            aux_2d: None,
+            aux_2d: Option::from(aux_2d),
             aux_3d: None
         };
 

@@ -1,6 +1,7 @@
 use ndarray::{Array1, ArrayD};
 use std::f64::consts::{PI};
 
+#[derive(Clone)]
 pub struct Ellipse {
     pub center: Array1<f64>,
     pub major_radius: f64,
@@ -8,8 +9,9 @@ pub struct Ellipse {
     pub angle: f64
 }
 
+#[derive(Clone)]
 pub struct Line {
-    pub origin: ArrayD<f64>,
+    pub origin: Array1<f64>,
     pub direction: Array1<f64>,
     pub shape: Vec<usize>
 }
@@ -77,7 +79,7 @@ impl Ellipse {
 }
 
 impl Line {
-    pub fn new(origin: ArrayD<f64>, direction: Array1<f64>) -> Line {
+    pub fn new(origin: Array1<f64>, direction: Array1<f64>) -> Line {
         let shape = origin.shape().to_owned();
         Line {
             origin,
